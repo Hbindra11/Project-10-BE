@@ -25,3 +25,17 @@ export const getRoster = asyncHandler(async (req, res) => {
   const roster = await Pokemon.find();
   res.status(200).json(roster);
 });
+
+// Remove a Pokémon from the roster
+export const removePokemon = asyncHandler(async (req, res) => {
+  const { id } = req.params;
+
+  // Attempt to delete the Pokémon by ID
+  const deletedPokemon = await Pokemon.findByIdAndDelete(id);
+
+  if (!deletedPokemon) {
+    throw new ErrorResponse("Pokémon not found in the roster", 404);
+  }
+
+  res.status(200).json({ message: "Pokémon removed from roster!" });
+});
